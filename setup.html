@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Filementor Studio — Kurulum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand: #1D9E75; --brand-dark: #085041; --brand-light: #E1F5EE;
+      --accent: #D85A30; --accent-light: #FAECE7;
+      --dark: #0e1a14; --text: #1a1a1a; --muted: #6b7280;
+      --bg: #f4f6f4; --card: #ffffff; --border: rgba(0,0,0,.08);
+      --radius: 16px; --font: 'Space Grotesk', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1rem; }
+
+    /* ── Kart ── */
+    .card { background: var(--card); border-radius: var(--radius); padding: 2.5rem; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,.1); border: 1.5px solid var(--border); }
+
+    /* ── Logo ── */
+    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
+    .logo-icon { width: 42px; height: 42px; background: var(--dark); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+    .logo-text { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; }
+    .logo-text strong { color: var(--brand); }
+    .logo-sub { font-size: 12px; color: var(--muted); margin-top: 2px; font-weight: 400; font-family: var(--font); }
+
+    /* ── Başlık ── */
+    .setup-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: .4rem; }
+    .setup-sub { font-size: 14px; color: var(--muted); margin-bottom: 2rem; line-height: 1.5; }
+
+    /* ── Mod Toggle ── */
+    .mode-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.5rem; }
+    .mode-btn { padding: 10px; border-radius: 10px; border: 2px solid var(--border); background: var(--bg); cursor: pointer; font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--muted); transition: all .15s; text-align: center; }
+    .mode-btn .mode-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .mode-btn.active.sandbox { border-color: #f59e0b; background: #fffbeb; color: #92400e; }
+    .mode-btn.active.live    { border-color: var(--brand); background: var(--brand-light); color: var(--brand-dark); }
+
+    /* ── Form ── */
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+    .form-label a { color: var(--brand); text-decoration: none; font-weight: 500; font-size: 11px; }
+    .input-wrap { position: relative; }
+    .form-input { width: 100%; padding: 11px 44px 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 14px; color: var(--text); background: #fff; transition: border-color .15s; outline: none; }
+    .form-input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(29,158,117,.1); }
+    .toggle-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; color: var(--muted); padding: 4px; }
+
+    /* ── Buton ── */
+    .btn { width: 100%; padding: 13px; border-radius: 50px; font-family: var(--font); font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: all .2s; margin-top: .5rem; }
+    .btn-test { background: var(--bg); color: var(--muted); border: 1.5px solid var(--border); margin-bottom: 8px; }
+    .btn-test:hover { border-color: var(--brand); color: var(--brand); }
+    .btn-save { background: var(--brand); color: #fff; }
+    .btn-save:hover { background: var(--brand-dark); transform: translateY(-1px); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none !important; }
+
+    /* ── Bildirim ── */
+    .notice { padding: 12px 14px; border-radius: 10px; font-size: 13px; font-weight: 500; margin-top: 1rem; display: none; align-items: center; gap: 8px; }
+    .notice.show { display: flex; }
+    .notice.success { background: var(--brand-light); color: var(--brand-dark); }
+    .notice.error   { background: var(--accent-light); color: #7a2a10; }
+    .notice.info    { background: #EEF2FF; color: #3730a3; }
+
+    /* ── Mevcut durum ── */
+    .status-bar { background: var(--bg); border-radius: 10px; padding: 12px 14px; margin-bottom: 1.5rem; font-size: 13px; display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--border); }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .status-dot.ok  { background: var(--brand); box-shadow: 0 0 0 3px rgba(29,158,117,.2); }
+    .status-dot.warn { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,.2); }
+
+    /* ── Divider ── */
+    .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+    /* ── Link ── */
+    .help-link { text-align: center; font-size: 13px; color: var(--muted); margin-top: 1.25rem; }
+    .help-link a { color: var(--brand); font-weight: 600; text-decoration: none; }
+
+    /* ── Spinner ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 6px; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <!-- Logo -->
+  <div class="logo">
+    <div class="logo-icon">⬡</div>
+    <div>
+      <div class="logo-text">Filementor<strong>Studio</strong></div>
+      <div class="logo-sub">Ödeme Kurulumu</div>
+    </div>
+  </div>
+
+  <!-- Mevcut durum -->
+  <div class="status-bar" id="status-bar">
+    <div class="status-dot warn" id="status-dot"></div>
+    <span id="status-text">Kontrol ediliyor...</span>
+  </div>
+
+  <div class="setup-title">iyzico API Bilgileri</div>
+  <p class="setup-sub">
+    iyzico panelinden aldığın API Key ve Secret Key'i gir. Bilgiler güvenli şekilde sunucuna kaydedilir.
+  </p>
+
+  <!-- Mod Seçimi -->
+  <div class="mode-toggle">
+    <button class="mode-btn sandbox active" id="btn-sandbox" onclick="setMode(true)">
+      <span class="mode-icon">🧪</span>
+      Sandbox (Test)
+    </button>
+    <button class="mode-btn live" id="btn-live" onclick="setMode(false)">
+      <span class="mode-icon">💳</span>
+      Canlı (Gerçek)
+    </button>
+  </div>
+
+  <!-- API Key -->
+  <div class="form-group">
+    <label class="form-label">
+      API Key
+      <a href="https://sandbox-merchant.iyzipay.com" target="_blank" id="panel-link">Paneli Aç →</a>
+    </label>
+    <div class="input-wrap">
+      <input class="form-input" type="password" id="api-key" placeholder="sandbox-xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+      <button class="toggle-eye" onclick="toggleVis('api-key', this)">👁</button>
+    </div>
+  </div>
+
+  <!-- Secret Key -->
+  <div class="form-group">
+    <label class="form-label">Secret Key</label>
+    <div class="input-wrap">
+      <input class="form-input" type="password" id="secret-key" placeholder="sandbox-xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+      <button class="toggle-eye" onclick="toggleVis('secret-key', this)">👁</button>
+    </div>
+  </div>
+
+  <!-- Test Butonu -->
+  <button class="btn btn-test" id="btn-test" onclick="testKeys()">🔍 Key'leri Test Et</button>
+
+  <!-- Kaydet Butonu -->
+  <button class="btn btn-save" id="btn-save" onclick="saveKeys()">✅ Kaydet ve Aktifleştir</button>
+
+  <!-- Bildirim -->
+  <div class="notice" id="notice"></div>
+
+  <div class="divider"></div>
+
+  <p class="help-link">
+    iyzico hesabın yok mu?
+    <a href="https://sandbox-merchant.iyzipay.com" target="_blank">Ücretsiz sandbox aç</a>
+    &nbsp;·&nbsp;
+    <a href="https://merchant.iyzipay.com" target="_blank">Canlı başvuru</a>
+  </p>
+</div>
+
+<script>
+let isSandbox = true;
+
+/* ── Sayfa yüklenince mevcut durumu göster ── */
+window.onload = async () => {
+  try {
+    const r   = await fetch('/api/config');
+    const cfg = await r.json();
+
+    const dot  = document.getElementById('status-dot');
+    const txt  = document.getElementById('status-text');
+
+    if (cfg.hasKeys) {
+      dot.className  = 'status-dot ok';
+      txt.textContent = `✅ API key kayıtlı · Mod: ${cfg.sandbox ? 'Sandbox' : 'Canlı'} · ${cfg.apiKeyHint}`;
+      setMode(cfg.sandbox, false);
+    } else {
+      dot.className  = 'status-dot warn';
+      txt.textContent = '⚠️ Henüz API key girilmemiş.';
+    }
+  } catch {
+    document.getElementById('status-text').textContent = '⚠️ Sunucuya bağlanılamadı.';
+  }
+};
+
+/* ── Mod seçimi ── */
+function setMode(sandbox, updateUI = true) {
+  isSandbox = sandbox;
+  if (updateUI) {
+    document.getElementById('btn-sandbox').classList.toggle('active', sandbox);
+    document.getElementById('btn-live').classList.toggle('active', !sandbox);
+    document.getElementById('panel-link').href = sandbox
+      ? 'https://sandbox-merchant.iyzipay.com'
+      : 'https://merchant.iyzipay.com';
+  }
+}
+
+/* ── Şifre göster/gizle ── */
+function toggleVis(id, btn) {
+  const inp = document.getElementById(id);
+  const isHidden = inp.type === 'password';
+  inp.type = isHidden ? 'text' : 'password';
+  btn.textContent = isHidden ? '🙈' : '👁';
+}
+
+/* ── Bildirim ── */
+function showNotice(type, msg) {
+  const el = document.getElementById('notice');
+  el.className = `notice ${type} show`;
+  el.textContent = msg;
+}
+
+/* ── Key'leri test et ── */
+async function testKeys() {
+  const apiKey    = document.getElementById('api-key').value.trim();
+  const secretKey = document.getElementById('secret-key').value.trim();
+  if (!apiKey || !secretKey) { showNotice('error', '❌ Lütfen her iki alanı da doldurun.'); return; }
+
+  const btn = document.getElementById('btn-test');
+  btn.innerHTML = '<span class="spinner"></span> Test ediliyor...';
+  btn.disabled  = true;
+
+  try {
+    const r   = await fetch('/api/config/test', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ apiKey, secretKey, sandbox: isSandbox }),
+    });
+    const res = await r.json();
+    showNotice(res.success ? 'success' : 'error',
+      res.success ? '✅ Key\'ler geçerli! Kaydedebilirsin.' : '❌ ' + res.message);
+  } catch {
+    showNotice('error', '❌ Sunucuya bağlanılamadı.');
+  }
+
+  btn.innerHTML = '🔍 Key\'leri Test Et';
+  btn.disabled  = false;
+}
+
+/* ── Kaydet ── */
+async function saveKeys() {
+  const apiKey    = document.getElementById('api-key').value.trim();
+  const secretKey = document.getElementById('secret-key').value.trim();
+  if (!apiKey || !secretKey) { showNotice('error', '❌ Lütfen her iki alanı da doldurun.'); return; }
+
+  const btn = document.getElementById('btn-save');
+  btn.innerHTML = '<span class="spinner"></span> Kaydediliyor...';
+  btn.disabled  = true;
+
+  try {
+    const r   = await fetch('/api/config', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ apiKey, secretKey, sandbox: isSandbox }),
+    });
+    const res = await r.json();
+
+    if (res.success) {
+      showNotice('success', `✅ Kaydedildi! Mağaza artık ${isSandbox ? 'sandbox' : 'canlı'} modunda çalışıyor.`);
+      // Durum barını güncelle
+      document.getElementById('status-dot').className = 'status-dot ok';
+      document.getElementById('status-text').textContent =
+        `✅ API key kayıtlı · Mod: ${isSandbox ? 'Sandbox' : 'Canlı'}`;
+      // Alanları temizle
+      document.getElementById('api-key').value    = '';
+      document.getElementById('secret-key').value = '';
+    } else {
+      showNotice('error', '❌ ' + res.message);
+    }
+  } catch {
+    showNotice('error', '❌ Sunucuya bağlanılamadı.');
+  }
+
+  btn.innerHTML = '✅ Kaydet ve Aktifleştir';
+  btn.disabled  = false;
+}
+</script>
+</body>
+</html>

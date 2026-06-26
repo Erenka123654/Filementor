@@ -1,4 +1,4 @@
-# PrintCraft Studio — 3D Baskı Mağazası
+# Filementor Studio — 3D Baskı Mağazası
 
 Sıfırdan yazılmış HTML/CSS/JS e-ticaret sitesi.
 Sunucu veya framework gerektirmez — sadece tarayıcıda aç.

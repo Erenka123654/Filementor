@@ -6,7 +6,7 @@ Sunucu veya framework gerektirmez — sadece tarayıcıda aç.
 ## 📁 Dosya Yapısı
 
 ```
-printcraft/
+filementor/
 ├── index.html        ← Mağaza vitrini (müşteri sayfası)
 ├── admin.html        ← Yönetim paneli
 ├── css/
